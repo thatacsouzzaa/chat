@@ -1,0 +1,65 @@
+<!--CADASTRO-->
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário Simples</title>
+    <link rel="stylesheet" href="/static/estilo.css">
+
+   
+</head>
+
+<body>
+    <img class="imagem" src="\static\img\black_chat.jpeg" alt="logo">
+    <h2 class="titulo">Cadastre-se</h2>
+    <div style="width: 50%; margin-left: auto; margin-right: 350px;">
+        <form class="formc" action="/cadastro" method="POST">
+
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" name="nome" placeholder="Digite seu nome">
+            </div>
+
+            <div class="form-group">
+                <label for="nome_usuario">Nome do Usuario:</label>
+                <input type="text" name="nome_usuario" placeholder="Escolha seu nome de usuário">
+            </div>
+
+            <div class="form-group">
+                <label for="senha">Senha:</label>
+                <input type="password" name="senha" placeholder="Digite sua senha">
+            </div>
+
+            <div class="form-group">
+                <label for="Telefone">Telefone:</label>
+                <input type="text" name="telefone" placeholder="Digite seu telefone">
+            </div>
+
+            <button class= "botao_cadastro"submit>Enviar</button>
+
+            <p class="login"> Já possui uma conta?<a href="/login">Login</a></p>
+        </form>
+        <img class="canto1" src="\static\img\canto_esquerdo.png" alt="canto1">
+        <img class="canto2" src="\static\img\canto_direito.png" alt="canto2">
+        <script>
+            const inputs = document.querySelectorAll("input");
+          
+            inputs.forEach(input => {
+              input.addEventListener("input", () => {
+                if (input.value.trim() !== "") {
+                  input.classList.add("filled");
+                } else {
+                  input.classList.remove("filled");
+                }
+              });
+            });
+          </script>
+          
+   
+</div>
+
+</body>
+
+</html>

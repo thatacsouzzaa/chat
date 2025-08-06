@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link rel="stylesheet" href="/static/estilo.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js" integrity="sha512-8BHxHDLsOHx+flIrQ0DrZcea7MkHqRU5GbTHmbdzMRnAaoCIkZ97PqZcXJkKZckMMhqfoeaJE+DNUVuyoQsO3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const socket = io();
+
+        socket.on('atualizar_lista', () => {
+            atualizarMensagens();
+        });
+
+        function atualizarMensagens() {
+            fetch('/obter_mensagens')
+                .then(response => response.json())
+                .then(mensagens => {
+                    const chatBox = document.querySelector(".chat-box");
+                    chatBox.innerHTML = mensagens.map(m => `<p>${m.mensagem}</p>`).join('');
+                    chatBox.scrollTop = chatBox.scrollHeight; // Rolagem automática
+                });
+        }
+
+        window.onload = () => {
+            const chatBox = document.querySelector(".chat-box");
+            chatBox.scrollTop = chatBox.scrollHeight; // Rola para o fim ao carregar
+        };
+    </script>
+</head>
+
+<body> <!-- Classe específica no body -->
+    <img class="imagem" src="/static/img/black_chat.jpeg" alt="logo">
+
+    <div class="boas-vindas">
+        <h2>Olá {{ session['usuario_logado'] }}! Seja bem vindo ao Black Chat!!</h2>
+      </div>
+
+    <div class="table-container">
+        <h2>Chat Geral</h2>
+        <div class="container_chat mensagem-chat" id="mensagens-box">
+            <div class="chat-box" style="max-height: 300px; overflow-y: auto;"> <!-- Estilo de rolagem -->
+                {% for msg in mensagens %}
+                    {% if msg[4] == session['usuario_logado'] %}
+                        <div class="container-mensagem_eu">
+                            <div class="mensagem-eu">
+                                <p><strong>Você:</strong> {{ msg[1] }}</p>
+                            </div>
+                            <small>{{ msg[3] }}</small>
+                        </div>
+                    {% else %}
+                        <div class="container-mensagem_outro">
+                            <div class="mensagem-outro">
+                                <p><strong>{{ msg[4] }}:</strong> {{ msg[1] }}</p>
+                            </div>
+                            <small>{{ msg[3] }}</small>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <form class="formulario_chat" action="#" method="POST">
+                <input type="text" name="mensagem" placeholder="Digite sua mensagem:" required>
+                <button type="submit" name="botao_enviar">></button>
+            </form>
+            
+            <img class="canto1" src="\static\img\canto_esquerdo.png" alt="canto1">
+            <img class="canto2" src="\static\img\canto_direito.png" alt="canto2">
+        </div>
+    </div>
+</body>
+
+</html>
